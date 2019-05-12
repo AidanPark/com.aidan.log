@@ -3,7 +3,6 @@ package com.aidan.log.viewer;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.aidan.log.LogBean;
 import com.aidan.log.R;
@@ -26,13 +27,15 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private ListView lv;
 
+    String title = "";
     String search = "";
     private int level = 1;
     private boolean desc = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "#### onCreate() ####");
+        //Log.i(TAG, "#### onCreate() ####");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logs);
     }
@@ -40,7 +43,9 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "#### onResume() ####");
+        //Log.i(TAG, "#### onResume() ####");
+        title = getPackageName();
+
         adapter = new LogAdapter(getApplicationContext());
 
         lv = (ListView) findViewById(R.id.lv);
@@ -55,7 +60,7 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
             public void afterTextChanged(Editable s) {
                 try {
                     String input = s.toString().trim();
-                    Log.v(TAG, "--input------------------" + input);
+                    //Log.d(TAG, "--input------------------" + input);
 
                     //갤럭시 노트 등에서 이 메서드가 두번 호출된다. 한번만 수행하기 위해 입력데이타 체크.
                     if (search.equals(input)) {
@@ -63,7 +68,7 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
                     }
                     search = input;
 
-                    Log.i(TAG, "+++ onSearchChanged +++" + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
+                    //Log.i(TAG, "+++ onSearchChanged +++" + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
                     adapter.setSearch(search);
                     Bundle b = new Bundle();
                     b.putString("search", search);
@@ -93,7 +98,7 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
                     level = 1;
                 }
 
-                Log.i(TAG, "+++ onLevelChanged +++ level : " + level);
+                //Log.i(TAG, "+++ onLevelChanged +++ level : " + level);
 
                 ((TextView) v).setText(getLevel(level));
 
@@ -112,7 +117,7 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View v) {
                 desc = !desc;
 
-                Log.i(TAG, "+++ onDescChanged +++ desc : " + desc);
+                //Log.i(TAG, "+++ onDescChanged +++ desc : " + desc);
 
                 ((TextView) v).setText(desc ? "Time Desc" : "Time ASC");
 
@@ -174,21 +179,21 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<LogBean>> onCreateLoader(int id, Bundle b) {
-        Log.i(TAG, "+++ onCreateLoader() called! +++ id : " + id + ", b : " + b);
+        //Log.i(TAG, "+++ onCreateLoader() called! +++ id : " + id + ", b : " + b);
         return new LogsLoader(getApplicationContext(), b);
     }
 
     @Override
     public void onLoadFinished(Loader<List<LogBean>> loader, List<LogBean> data) {
-        Log.i(TAG, "+++ onLoadFinished() called! +++" + data.size());
+        //Log.i(TAG, "+++ onLoadFinished() called! +++" + data.size());
         adapter.setData(data);
 
         if (data == null || data.size() == 0) {
             findViewById(R.id.tv_info).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.tv_title)).setText("AVD Logs " + 0);
+            ((TextView) findViewById(R.id.tv_title)).setText(title + " Logs " + 0);
         } else {
             findViewById(R.id.tv_info).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.tv_title)).setText("AVD Logs " + data.size());
+            ((TextView) findViewById(R.id.tv_title)).setText(title + " Logs " + data.size());
             Toast.makeText(getApplicationContext(), data.size() + " logs retrieved.", Toast.LENGTH_LONG).show();
         }
 
@@ -201,7 +206,7 @@ public class LogsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<LogBean>> loader) {
-        Log.i(TAG, "+++ onLoadReset() called! +++");
+        //Log.i(TAG, "+++ onLoadReset() called! +++");
         adapter.setData(null);
     }
 

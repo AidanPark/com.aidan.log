@@ -4,7 +4,6 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.aidan.log.Database;
 import com.aidan.log.LogBean;
@@ -46,7 +45,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
             level = b.getInt("level", 0);
             desc = b.getBoolean("desc", false);
         }
-        Log.i(TAG, "+++ LogsLoader called! +++ search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
+        //Log.i(TAG, "+++ LogsLoader called! +++ search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
     }
 
     /****************************************************/
@@ -59,7 +58,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
      */
     @Override
     public List<LogBean> loadInBackground() {
-        Log.e(TAG, "+++ loadInBackground() called! +++   " + contentChangedFromObserver + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
+        //Log.e(TAG, "+++ loadInBackground() called! +++   " + contentChangedFromObserver + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
 
         List<LogBean> returnThis = null;
 
@@ -112,7 +111,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
             Collections.reverse(returnThis);
         }
 
-        Log.e(TAG, "returnThis.size() : " + returnThis.size());
+        //Log.e(TAG, "returnThis.size() : " + returnThis.size());
         return returnThis;
     }
 
@@ -135,7 +134,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
     @Override
     public void deliverResult(List<LogBean> _lBeans) {
         if (isReset()) {
-            Log.w(TAG, "+++ Warning! An async query came in while the Loader was reset! +++");
+            //Log.i(TAG, "+++ Warning! An async query came in while the Loader was reset! +++");
             // The Loader has been reset; ignore the result and invalidate the data.
             // This can happen when the Loader is reset while an asynchronous query
             // is working in the background. That is, when the background thread
@@ -148,7 +147,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
         }
 
         if (isStarted()) {
-            Log.i(TAG, "+++ Delivering results to the LoaderManager for" + " the ListFragment to display! +++" + _lBeans.size());
+            //Log.i(TAG, "+++ Delivering results to the LoaderManager for" + " the ListFragment to display! +++" + _lBeans.size());
             // If the Loader is in a started state, have the superclass deliver the
             // results to the client.
             super.deliverResult(_lBeans);
@@ -161,13 +160,13 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
 
     @Override
     protected void onStartLoading() {
-        Log.i(TAG, "+++ onStartLoading() called! +++   " + contentChangedFromObserver + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
+        //Log.i(TAG, "+++ onStartLoading() called! +++   " + contentChangedFromObserver + "    search : [" + search + "] level : [" + level + "] desc : [" + desc + "]");
         forceLoad();
     }
 
     @Override
     protected void onStopLoading() {
-        Log.i(TAG, "+++ onStopLoading() called! +++");
+        //Log.i(TAG, "+++ onStopLoading() called! +++");
 
         // The Loader has been put in a stopped state, so we should attempt to
         // cancel the current load (if there is one).
@@ -180,7 +179,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
 
     @Override
     protected void onReset() {
-        Log.i(TAG, "+++ onReset() called! +++");
+        //Log.i(TAG, "+++ onReset() called! +++");
 
         // Ensure the loader is stopped.
         onStopLoading();
@@ -188,7 +187,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
 
     @Override
     public void onCanceled(List<LogBean> _lBeans) {
-        Log.i(TAG, "+++ onCanceled() called! +++");
+        //Log.i(TAG, "+++ onCanceled() called! +++");
 
         // Attempt to cancel the current asynchronous load.
         super.onCanceled(_lBeans);
@@ -201,7 +200,7 @@ public class LogsLoader extends AsyncTaskLoader<List<LogBean>> {
 
     @Override
     public void forceLoad() {
-        Log.i(TAG, "+++ forceLoad() called! +++");
+        //Log.i(TAG, "+++ forceLoad() called! +++");
         super.forceLoad();
     }
 }

@@ -16,9 +16,9 @@ public class Log {
 
     public static void init(Context context, boolean debug) {
         Log.DEBUG = debug;
-        if(DEBUG) {
-            Database.open(context);
-        }
+//        if(DEBUG) {
+            //Database.open(context);
+//        }
     }
 
     protected static String getLogMessage(LogTag TAG, String msg) {
@@ -73,8 +73,8 @@ public class Log {
     }
 
     private static void insertLog(int level, String tag, String msg) {
-        if(DEBUG) {
-            Database.insertLog(level, tag, msg);
-        }
+//        if(DEBUG) {
+            //Database.insertLog(level, tag, msg);
+//        }
     }
 }
